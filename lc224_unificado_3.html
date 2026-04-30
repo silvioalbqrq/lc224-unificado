@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LC 224/2025 — Redução de Benefícios Tributários</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --surface2: #18181f;
+    --surface3: #1f1f28;
+    --border: rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.12);
+    --text: #e8e8f0;
+    --muted: #7070a0;
+    --faint: #3a3a55;
+    --accent: #c8ff00;
+    --accent3: #7c6fff;
+    --accent-blue: #6c8fff;
+    --accent-violet: #a78bfa;
+    --danger: #ff4d6d;
+    --safe: #00d68f;
+    --warn: #ffd166;
+    --font-head: 'Syne', sans-serif;
+    --font-serif: 'DM Serif Display', serif;
+    --font-body: 'DM Sans', sans-serif;
+    --font-mono: 'DM Mono', monospace;
+  }
+  body.light {
+    --bg: #f0f2f8; --surface: #ffffff; --surface2: #e8eaf2; --surface3: #dde0ee;
+    --border: rgba(0,0,0,0.08); --border2: rgba(0,0,0,0.15);
+    --text: #1a1c2e; --muted: #5c5f78; --faint: #9496a8;
+    --accent: #3a7d00; --accent3: #5040cc;
+    --accent-blue: #3b5ce4; --accent-violet: #7c3aed;
+    --danger: #cc1f3d; --safe: #007a55; --warn: #8a6000;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);font-family:var(--font-body);font-size:15px;line-height:1.65;min-height:100vh;transition:background .25s,color .25s;}
+  body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");opacity:.4;}
+  .page{position:relative;z-index:1;max-width:1140px;margin:0 auto;padding:0 24px 80px;}
+
+  /* theme btn */
+  .theme-btn{position:fixed;top:18px;right:20px;z-index:200;display:flex;align-items:center;gap:7px;background:var(--surface);border:1px solid var(--border2);padding:7px 14px 7px 10px;cursor:pointer;font-family:var(--font-body);font-size:12px;font-weight:500;color:var(--muted);transition:all .2s;box-shadow:0 2px 12px rgba(0,0,0,.2);}
+  .theme-btn:hover{border-color:var(--accent);color:var(--text);}
+  .theme-btn .icon{font-size:15px;line-height:1;transition:transform .3s;}
+  .theme-btn:hover .icon{transform:rotate(20deg);}
+
+  /* header */
+  header{padding:64px 0 48px;border-bottom:1px solid var(--border);margin-bottom:0;}
+  .header-tag{display:inline-block;font-family:var(--font-mono);font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);border:1px solid var(--accent);padding:3px 10px;margin-bottom:20px;opacity:.9;}
+  h1{font-family:var(--font-head);font-size:clamp(28px,4vw,52px);font-weight:800;line-height:1.1;letter-spacing:-.02em;color:var(--text);margin-bottom:16px;}
+  h1 span{color:var(--accent);}
+  .header-sub{font-size:16px;color:var(--muted);max-width:620px;font-weight:300;}
+  .header-meta{margin-top:28px;display:flex;gap:12px;flex-wrap:wrap;}
+  .meta-chip{font-family:var(--font-mono);font-size:11px;color:var(--muted);border:1px solid var(--faint);padding:4px 10px;}
+
+  /* main tabs */
+  .main-tabs{display:flex;border-bottom:2px solid var(--border2);position:sticky;top:0;z-index:100;background:var(--bg);padding:0 4px;}
+  .main-tab{padding:18px 32px;font-family:var(--font-head);font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .25s;user-select:none;display:flex;align-items:center;gap:10px;position:relative;}
+  .main-tab:hover{color:var(--muted);background:rgba(255,255,255,.03);}
+  body.light .main-tab:hover{background:rgba(0,0,0,.03);}
+  .main-tab.active{color:var(--accent);border-bottom-color:var(--accent);background:rgba(200,255,0,.05);}
+  body.light .main-tab.active{background:rgba(58,125,0,.06);}
+  .main-tab .tab-num{font-family:var(--font-mono);font-size:11px;background:var(--surface2);color:var(--faint);padding:3px 8px;border:1px solid var(--border);transition:all .25s;letter-spacing:.08em;}
+  .main-tab:hover .tab-num{color:var(--muted);border-color:var(--border2);}
+  .main-tab.active .tab-num{background:var(--accent);color:#0a0a0f;border-color:var(--accent);font-weight:700;}
+  body.light .main-tab.active .tab-num{background:var(--accent);color:#fff;border-color:var(--accent);}
+  .main-tab.active::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:100%;height:100%;background:radial-gradient(ellipse at center top,rgba(200,255,0,.08) 0%,transparent 70%);pointer-events:none;}
+  body.light .main-tab.active::after{background:radial-gradient(ellipse at center top,rgba(58,125,0,.06) 0%,transparent 70%);}
+  .main-panel{display:none;padding-top:56px;}
+  .main-panel.active{display:block;}
+
+  /* section title */
+  .section-title{font-family:var(--font-head);font-size:13px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:32px;}
+
+  /* article grid */
+  .article{margin-bottom:64px;}
+  .article-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);}
+  .art-card{background:var(--surface);padding:28px;transition:background .2s;}
+  .art-card:hover{background:var(--surface2);}
+  .art-card-num{font-family:var(--font-mono);font-size:11px;color:var(--faint);margin-bottom:10px;}
+  .art-card h3{font-family:var(--font-head);font-size:15px;font-weight:700;color:var(--text);margin-bottom:8px;}
+  .art-card p{font-size:13px;color:var(--muted);line-height:1.6;}
+  .art-card .formula{margin-top:12px;padding:8px 12px;background:var(--surface3);border-left:2px solid var(--accent3);font-family:var(--font-mono);font-size:12px;color:var(--text);}
+
+  /* excecoes */
+  .excecoes{margin-bottom:64px;padding:32px;border:1px solid var(--border);background:var(--surface);}
+  .excecoes h2{font-family:var(--font-head);font-size:13px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--warn);margin-bottom:24px;}
+  .exc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px;}
+  .exc-item{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--muted);padding:8px;border:1px solid var(--border);background:var(--surface2);}
+  .exc-item::before{content:'—';color:var(--safe);flex-shrink:0;font-family:var(--font-mono);}
+
+  /* inciso calc */
+  .calc-section h2{font-family:var(--font-head);font-size:13px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:32px;}
+  .calc-layout{display:grid;grid-template-columns:220px 1fr;gap:1px;background:var(--border);border:1px solid var(--border);min-height:520px;}
+  .calc-nav{background:var(--surface);}
+  .calc-nav-item{padding:16px 20px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s;position:relative;}
+  .calc-nav-item:hover{background:var(--surface2);}
+  .calc-nav-item.active{background:var(--surface2);}
+  .calc-nav-item.active::after{content:'';position:absolute;right:0;top:0;bottom:0;width:2px;background:var(--accent);}
+  .nav-inc{font-family:var(--font-mono);font-size:10px;color:var(--faint);letter-spacing:.1em;margin-bottom:4px;}
+  .nav-label{font-size:13px;font-weight:500;color:var(--text);line-height:1.3;}
+  .calc-nav-item.active .nav-label{color:var(--accent);}
+  .calc-body{background:var(--surface);padding:36px;display:flex;flex-direction:column;gap:28px;}
+  .panel{display:none;flex-direction:column;gap:28px;}
+  .panel.active{display:flex;}
+  .panel-header h3{font-family:var(--font-head);font-size:20px;font-weight:700;color:var(--text);margin-bottom:6px;}
+  .panel-header p{font-size:13px;color:var(--muted);line-height:1.6;max-width:560px;}
+  .formula-box{display:inline-block;margin-top:10px;padding:6px 14px;background:var(--surface3);border-left:2px solid var(--accent3);font-family:var(--font-mono);font-size:12px;color:var(--accent3);}
+  .inputs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;}
+  .field{display:flex;flex-direction:column;gap:6px;}
+  .field label{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+  .field input,.field select{background:var(--surface3);border:1px solid var(--border2);color:var(--text);font-family:var(--font-mono);font-size:14px;padding:10px 14px;outline:none;transition:border-color .15s;appearance:none;-webkit-appearance:none;}
+  .field input:focus,.field select:focus{border-color:var(--accent);}
+  .results{background:var(--surface2);border:1px solid var(--border);overflow:hidden;}
+  .result-header{padding:12px 20px;background:var(--surface3);border-bottom:1px solid var(--border);font-family:var(--font-mono);font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--faint);}
+  .result-rows{padding:0;}
+  .result-row{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;border-bottom:1px solid var(--border);font-size:13px;}
+  .result-row:last-child{border-bottom:none;}
+  .result-row .r-label{color:var(--muted);}
+  .result-row .r-val{font-family:var(--font-mono);font-size:13px;color:var(--text);}
+  .result-row.highlight{background:rgba(200,255,0,.04);}
+  body.light .result-row.highlight{background:rgba(58,125,0,.05);}
+  .result-row.highlight .r-label{color:var(--text);font-weight:500;}
+  .result-row.sep{height:1px;padding:0;background:var(--border2);}
+  .impact-badge{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:12px;padding:4px 10px;font-weight:500;}
+  .impact-badge.up{background:rgba(255,77,109,.15);color:var(--danger);border:1px solid rgba(255,77,109,.3);}
+  .impact-badge.zero{background:rgba(0,214,143,.1);color:var(--safe);border:1px solid rgba(0,214,143,.2);}
+
+  /* lp panel */
+  .lp-header-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(108,143,255,.12);border:1px solid rgba(108,143,255,.25);color:var(--accent-blue);font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;padding:4px 12px;margin-bottom:16px;}
+  .lp-header-badge::before{content:'●';font-size:8px;}
+  body.light .lp-header-badge{background:rgba(59,92,228,.1);border-color:rgba(59,92,228,.22);color:#3b5ce4;}
+  .lp-title{font-family:var(--font-serif);font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:400;line-height:1.2;color:var(--text);margin-bottom:8px;}
+  .lp-title em{font-style:italic;color:var(--accent-violet);}
+  .lp-sub{color:var(--muted);font-size:13px;font-weight:300;margin-bottom:40px;}
+
+  /* scenario tabs */
+  .scenario-label{font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);margin-bottom:12px;}
+  .scenario-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:2rem;}
+  .stab{position:relative;background:var(--surface2);border:1px solid var(--border);padding:16px 18px;cursor:pointer;transition:all .2s;text-align:left;}
+  .stab:hover{border-color:var(--border2);background:var(--surface3);}
+  .stab.active-1{background:linear-gradient(135deg,rgba(0,214,143,.08),rgba(0,214,143,.03));border-color:rgba(0,214,143,.3);}
+  .stab.active-2{background:linear-gradient(135deg,rgba(255,209,102,.08),rgba(255,209,102,.03));border-color:rgba(255,209,102,.3);}
+  .stab.active-3{background:linear-gradient(135deg,rgba(255,77,109,.08),rgba(255,77,109,.03));border-color:rgba(255,77,109,.3);}
+  .stab-num{font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px;}
+  .stab-1 .stab-num,.active-1 .stab-num{color:var(--safe);}
+  .stab-2 .stab-num,.active-2 .stab-num{color:var(--warn);}
+  .stab-3 .stab-num,.active-3 .stab-num{color:var(--danger);}
+  .stab-title{font-size:12px;font-weight:500;color:var(--text);line-height:1.4;}
+  .stab-desc{font-size:11px;color:var(--muted);margin-top:4px;line-height:1.4;}
+  .stab-dot{position:absolute;top:14px;right:14px;width:7px;height:7px;border-radius:50%;opacity:0;transition:opacity .2s;}
+  .stab.active .stab-dot{opacity:1;}
+  .stab.active-1 .stab-dot{background:var(--safe);box-shadow:0 0 6px var(--safe);}
+  .stab.active-2 .stab-dot{background:var(--warn);box-shadow:0 0 6px var(--warn);}
+  .stab.active-3 .stab-dot{background:var(--danger);box-shadow:0 0 6px var(--danger);}
+
+  /* controls row LP */
+  .controls-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1.5rem;}
+  .ctrl-card{background:var(--surface2);border:1px solid var(--border);padding:14px 16px;}
+  .ctrl-label{font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:var(--faint);margin-bottom:8px;}
+  select.lp-select{width:100%;background:var(--surface3);border:1px solid var(--border);color:var(--text);font-family:var(--font-body);font-size:13px;padding:8px 10px;cursor:pointer;outline:none;transition:border-color .15s;appearance:none;}
+  select.lp-select:hover,select.lp-select:focus{border-color:var(--accent-blue);}
+
+  /* lp inputs */
+  .lp-inputs-section{margin-bottom:1.5rem;}
+  .lp-inputs-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+  .inp-card{background:var(--surface2);border:1px solid var(--border);padding:16px;position:relative;transition:border-color .2s;}
+  .inp-card:focus-within{border-color:var(--accent-blue);}
+  .inp-card.t4{border-color:rgba(108,143,255,.2);background:rgba(108,143,255,.04);}
+  .inp-quarter{font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);margin-bottom:6px;}
+  .inp-label{font-size:11px;color:var(--muted);margin-bottom:10px;}
+  .inp-field{display:flex;align-items:center;gap:4px;}
+  .inp-prefix{font-size:12px;color:var(--faint);font-family:var(--font-mono);}
+  input.lp-input[type=number]{width:100%;background:var(--surface3);border:1px solid var(--border);color:var(--text);font-family:var(--font-mono);font-size:13px;padding:8px 10px;outline:none;transition:border-color .15s;-moz-appearance:textfield;}
+  input.lp-input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;}
+  input.lp-input[type=number]:focus{border-color:var(--accent-blue);}
+  .inp-limit-bar{margin-top:10px;height:3px;background:var(--surface3);overflow:hidden;}
+  .inp-limit-fill{height:100%;transition:width .3s,background .3s;}
+  .inp-limit-label{font-family:var(--font-mono);font-size:10px;color:var(--faint);margin-top:4px;}
+
+  /* lp metrics */
+  .lp-metrics-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:1.5rem;}
+  .metric-card{padding:20px;position:relative;overflow:hidden;}
+  .metric-card.neutral{background:var(--surface2);border:1px solid var(--border);}
+  .metric-card.positive{background:rgba(0,214,143,.08);border:1px solid rgba(0,214,143,.2);}
+  .metric-card.negative{background:rgba(255,77,109,.08);border:1px solid rgba(255,77,109,.2);}
+  .metric-card.warning{background:rgba(255,209,102,.08);border:1px solid rgba(255,209,102,.2);}
+  .metric-label{font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+  .metric-value{font-family:var(--font-serif);font-size:1.6rem;font-weight:400;line-height:1.1;}
+  .metric-card.neutral .metric-value{color:var(--text);}
+  .metric-card.positive .metric-value{color:var(--safe);}
+  .metric-card.negative .metric-value{color:var(--danger);}
+  .metric-card.warning .metric-value{color:var(--warn);}
+  .metric-sub{font-size:11px;color:var(--muted);margin-top:6px;}
+
+  /* lp table */
+  .table-wrap{background:var(--surface2);border:1px solid var(--border);overflow:hidden;margin-bottom:1.5rem;}
+  .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  .table-header{padding:14px 20px;border-bottom:1px solid var(--border);font-family:var(--font-mono);font-size:11px;font-weight:500;letter-spacing:.09em;text-transform:uppercase;color:var(--faint);display:flex;align-items:center;gap:8px;}
+  table{width:100%;min-width:820px;border-collapse:collapse;table-layout:fixed;}
+  table colgroup col:nth-child(1){width:120px;}table colgroup col:nth-child(2){width:130px;}table colgroup col:nth-child(3){width:120px;}table colgroup col:nth-child(4){width:120px;}table colgroup col:nth-child(5){width:120px;}table colgroup col:nth-child(6){width:110px;}table colgroup col:nth-child(7){width:110px;}table colgroup col:nth-child(8){width:min-content;min-width:110px;}
+  thead th{text-align:left;padding:10px;font-family:var(--font-mono);font-size:10px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);border-bottom:1px solid var(--border);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  thead th:last-child,tbody td:last-child,tfoot td:last-child{white-space:nowrap;overflow:visible;min-width:110px;}
+  tbody td{padding:12px 10px;border-bottom:1px solid rgba(255,255,255,.04);font-size:12px;vertical-align:middle;overflow:hidden;text-overflow:ellipsis;}
+  body.light tbody td{border-bottom:1px solid rgba(0,0,0,.05);}
+  tbody tr:last-child td{border-bottom:none;}
+  tbody tr{transition:background .15s;}
+  tbody tr:hover{background:rgba(255,255,255,.02);}
+  body.light tbody tr:hover{background:rgba(0,0,0,.02);}
+  tbody tr.t4-row{background:rgba(108,143,255,.05);}
+  tfoot td{padding:11px 10px;font-size:12px;font-weight:500;border-top:1px solid var(--border2);}
+  .num{text-align:right;font-family:var(--font-mono);white-space:nowrap;}
+  .pill{display:inline-block;font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;}
+  .pill-green{background:rgba(0,214,143,.15);color:var(--safe);}
+  .pill-amber{background:rgba(255,209,102,.15);color:var(--warn);}
+  .pill-red{background:rgba(255,77,109,.15);color:var(--danger);}
+  .pill-blue{background:rgba(108,143,255,.15);color:var(--accent-blue);}
+
+  /* calc memory */
+  .calc-box{background:var(--surface2);border:1px solid var(--border);overflow:hidden;margin-bottom:1.5rem;}
+  .calc-box-header{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+  .calc-box-title{font-family:var(--font-mono);font-size:12px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);}
+  .calc-steps{padding:8px 0;}
+  .calc-step{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:10px 20px;border-bottom:1px solid rgba(255,255,255,.04);transition:background .1s;}
+  body.light .calc-step{border-bottom:1px solid rgba(0,0,0,.05);}
+  .calc-step:last-child{border-bottom:none;}
+  .calc-step:hover{background:rgba(255,255,255,.02);}
+  body.light .calc-step:hover{background:rgba(0,0,0,.02);}
+  .calc-step-key{font-size:12px;color:var(--muted);flex:1;line-height:1.5;}
+  .calc-step-val{font-family:var(--font-mono);font-size:12px;font-weight:500;color:var(--text);white-space:nowrap;text-align:right;}
+  .calc-step-val.ok{color:var(--safe);}
+  .calc-step-val.warn{color:var(--danger);}
+  .calc-step-val.info{color:var(--accent-blue);}
+
+  /* restit / csll */
+  .restit-alert{display:none;background:linear-gradient(135deg,rgba(0,214,143,.08),rgba(0,214,143,.04));border:1px solid rgba(0,214,143,.25);padding:16px 20px;margin-bottom:1.5rem;font-size:13px;}
+  .restit-alert.show{display:flex;align-items:flex-start;gap:12px;}
+  .restit-icon{color:var(--safe);font-size:16px;flex-shrink:0;margin-top:1px;}
+  .restit-text{color:var(--text);line-height:1.6;}
+  .restit-value{font-family:var(--font-mono);font-weight:500;color:var(--safe);}
+  .csll-notice{display:none;background:rgba(255,209,102,.08);border:1px solid rgba(255,209,102,.25);padding:10px 16px;font-size:12px;color:var(--warn);margin-bottom:1rem;line-height:1.5;}
+  .csll-notice.show{display:block;}
+
+  td.var-pos{color:var(--danger)!important;font-weight:600!important;}
+  td.var-neg{color:var(--safe)!important;font-weight:600!important;}
+  td.var-zero{color:var(--muted)!important;}
+  tfoot td.var-pos{color:var(--danger)!important;font-weight:700!important;}
+  tfoot td.var-neg{color:var(--safe)!important;font-weight:700!important;}
+
+  /* footer */
+  .site-footer{margin-top:80px;padding-top:32px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:16px;}
+  .site-footer p{font-size:12px;color:var(--faint);}
+
+  @keyframes fadeUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+  .anim{animation:fadeUp .3s ease forwards;}
+
+  @media(max-width:700px){
+    .scenario-tabs{grid-template-columns:1fr;}
+    .lp-inputs-grid{grid-template-columns:repeat(2,1fr);}
+    .lp-metrics-grid{grid-template-columns:1fr;}
+    .controls-row{grid-template-columns:1fr;}
+    .calc-layout{grid-template-columns:1fr;}
+    .calc-nav{display:flex;flex-wrap:wrap;overflow-x:auto;}
+    .calc-nav-item{border-bottom:none;border-right:1px solid var(--border);flex:0 0 auto;}
+    .calc-nav-item.active::after{bottom:0;top:auto;left:0;right:0;width:auto;height:2px;}
+    .calc-body{padding:24px 16px;}
+    .article-grid{grid-template-columns:1fr;}
+    .main-tab{padding:12px 16px;font-size:11px;}
+    h1{font-size:1.8rem;}
+  }
+</style>
+</head>
+<body>
+
+<button class="theme-btn" onclick="toggleTheme()" id="theme-btn">
+  <span class="icon" id="theme-icon">☀️</span>
+  <span id="theme-label">Tema claro</span>
+</button>
+
+<div class="page">
+  <header>
+    <div class="header-tag">Ferramenta Fiscal · LC 224/2025</div>
+    <h1>Redução de Benefícios<br>Tributários <span>LC 224/2025</span></h1>
+    <p class="header-sub">Suite completa: corte linear dos sete mecanismos do art. 4º, §4º e simulador trimestral do Lucro Presumido com os cenários do art. 15, §5º — IN RFB 2.306/2026.</p>
+    <div class="header-meta">
+      <span class="meta-chip">Vigência: 1º jan 2026</span>
+      <span class="meta-chip">Anterioridade: abr 2026</span>
+      <span class="meta-chip">Corte linear de 10%</span>
+      <span class="meta-chip">Limite LP: R$ 5.000.000/ano</span>
+    </div>
+  </header>
+
+  <div class="main-tabs">
+    <div class="main-tab active" onclick="switchPanel('geral')"><span class="tab-num">1</span>Art. 4º, §4º — Os 7 Mecanismos</div>
+    <div class="main-tab" onclick="switchPanel('lp')"><span class="tab-num">2</span>Art. 15, §5º — Lucro Presumido</div>
+  </div>
+
+  <!-- PAINEL 1 -->
+  <div class="main-panel active" id="panel-geral">
+    <section class="article">
+      <h2 class="section-title">Os sete mecanismos de corte — art. 4º, §4º</h2>
+      <div class="article-grid">
+        <div class="art-card"><div class="art-card-num">Inciso I</div><h3>Isenção e alíquota zero</h3><p>O produto ou operação deixa de ser isento. Passa a incidir 10% da alíquota do sistema padrão de tributação.</p><div class="formula">nova alíq = 10% × alíq_padrão</div></div>
+        <div class="art-card"><div class="art-card-num">Inciso II</div><h3>Alíquota reduzida</h3><p>A nova alíquota resulta de uma média ponderada: 90% da alíquota reduzida atual mais 10% da alíquota padrão.</p><div class="formula">nova = 0,9 × alíq_red + 0,1 × alíq_pad</div></div>
+        <div class="art-card"><div class="art-card-num">Inciso III</div><h3>Redução de base de cálculo</h3><p>Mantém-se 90% da redução de base prevista no benefício. Os 10% restantes são extintos, elevando a base tributável.</p><div class="formula">nova redução = 90% × redução_original</div></div>
+        <div class="art-card"><div class="art-card-num">Inciso IV</div><h3>Crédito presumido ou fictício</h3><p>O crédito fica limitado a 90% do valor original. Os 10% não aproveitados são cancelados definitivamente.</p><div class="formula">crédito aproveitável = 90% × crédito_original</div></div>
+        <div class="art-card"><div class="art-card-num">Inciso V</div><h3>Redução de tributo devido</h3><p>O benefício que reduz o tributo já apurado fica limitado a 90% da redução prevista na legislação específica.</p><div class="formula">nova redução = 90% × redução_original</div></div>
+        <div class="art-card"><div class="art-card-num">Inciso VI</div><h3>Regimes sobre receita bruta</h3><p>Regimes em que o tributo é cobrado como porcentagem da receita bruta têm a alíquota elevada em 10% de seu valor.</p><div class="formula">nova alíq = alíq_atual × 1,10</div></div>
+        <div class="art-card"><div class="art-card-num">Inciso VII + §5º</div><h3>Base de cálculo presumida</h3><p>Os percentuais de presunção sobem 10%, mas no lucro presumido somente sobre a parcela da receita que exceder R$ 5 milhões/ano. Utilize a aba 2 para a simulação trimestral completa.</p><div class="formula">novo % = % × 1,10 (acima de R$ 5M)</div></div>
+      </div>
+    </section>
+
+    <section class="excecoes">
+      <h2>Benefícios excluídos do corte — art. 4º, §8º</h2>
+      <div class="exc-grid">
+        <div class="exc-item">Imunidades constitucionais</div>
+        <div class="exc-item">Zona Franca de Manaus e áreas de livre comércio</div>
+        <div class="exc-item">Cesta Básica Nacional (LC 214/2025)</div>
+        <div class="exc-item">Contribuintes com investimento aprovado até 31/12/2025</div>
+        <div class="exc-item">Entidades sem fins lucrativos (OSCIPs e OS)</div>
+        <div class="exc-item">Simples Nacional e regimes do art. 146 da CF</div>
+        <div class="exc-item">Benefícios com teto global e habilitação prévia</div>
+        <div class="exc-item">Minha Casa, Minha Vida</div>
+        <div class="exc-item">Prouni</div>
+        <div class="exc-item">Alíquotas ad rem</div>
+        <div class="exc-item">Compensação fiscal por horário gratuito eleitoral</div>
+        <div class="exc-item">Contribuição Previdenciária sobre Receita Bruta (CPRB)</div>
+        <div class="exc-item">TI, Comunicação e Semicondutores (política industrial)</div>
+      </div>
+    </section>
+
+    <section class="calc-section">
+      <h2>Calculadora interativa — simule o impacto por mecanismo</h2>
+      <div class="calc-layout">
+        <nav class="calc-nav">
+          <div class="calc-nav-item active" onclick="showTab('i1')"><div class="nav-inc">Inciso I</div><div class="nav-label">Isenção / alíquota zero</div></div>
+          <div class="calc-nav-item" onclick="showTab('i2')"><div class="nav-inc">Inciso II</div><div class="nav-label">Alíquota reduzida</div></div>
+          <div class="calc-nav-item" onclick="showTab('i3')"><div class="nav-inc">Inciso III</div><div class="nav-label">Redução de base</div></div>
+          <div class="calc-nav-item" onclick="showTab('i4')"><div class="nav-inc">Inciso IV</div><div class="nav-label">Crédito presumido</div></div>
+          <div class="calc-nav-item" onclick="showTab('i5')"><div class="nav-inc">Inciso V</div><div class="nav-label">Redução de tributo</div></div>
+          <div class="calc-nav-item" onclick="showTab('i6')"><div class="nav-inc">Inciso VI</div><div class="nav-label">% Receita bruta</div></div>
+          <div class="calc-nav-item" onclick="showTab('i7')"><div class="nav-inc">Inciso VII + §5º</div><div class="nav-label">Lucro presumido</div></div>
+        </nav>
+        <div class="calc-body">
+          <div class="panel active" id="tab-i1">
+            <div class="panel-header"><h3>Isenção e alíquota zero</h3><p>O benefício deixa de existir parcialmente: passa a incidir 10% da alíquota do sistema padrão. O §6º do art. 4º proíbe alteração por decreto.</p><div class="formula-box">nova alíquota = 10% × alíquota_padrão</div></div>
+            <div class="inputs-grid">
+              <div class="field"><label>Tributo</label><select id="i1-trib" onchange="calcI1()"><option value="0.65,3">PIS/Cofins cumulativo</option><option value="1.65,7.6">PIS/Cofins não cumulativo</option><option value="2.1,9.65">PIS/Cofins-Importação bens</option><option value="1.65,7.6i">PIS/Cofins-Importação serviços</option><option value="15,0">IRPJ (15%)</option><option value="9,0">CSLL (9%)</option></select></div>
+              <div class="field"><label>Base de cálculo (R$)</label><input type="number" id="i1-base" value="1000000" oninput="calcI1()"></div>
+            </div>
+            <div class="results"><div class="result-header">Resultado da simulação</div><div class="result-rows" id="i1-result"></div></div>
+          </div>
+          <div class="panel" id="tab-i2">
+            <div class="panel-header"><h3>Alíquota reduzida</h3><p>Nova alíquota = média ponderada: 90% da alíquota reduzida atual + 10% da alíquota padrão.</p><div class="formula-box">nova = 0,9 × alíq_red + 0,1 × alíq_padrão</div></div>
+            <div class="inputs-grid">
+              <div class="field"><label>Alíquota padrão (%)</label><input type="number" id="i2-pad" value="7.6" step="0.01" oninput="calcI2()"></div>
+              <div class="field"><label>Alíquota reduzida atual (%)</label><input type="number" id="i2-red" value="3" step="0.01" oninput="calcI2()"></div>
+              <div class="field"><label>Base de cálculo (R$)</label><input type="number" id="i2-base" value="1000000" oninput="calcI2()"></div>
+            </div>
+            <div class="results"><div class="result-header">Resultado da simulação</div><div class="result-rows" id="i2-result"></div></div>
+          </div>
+          <div class="panel" id="tab-i3">
+            <div class="panel-header"><h3>Redução de base de cálculo</h3><p>A redução de base prevista no benefício fica limitada a 90%. Os 10% restantes são extintos, aumentando a base tributável.</p><div class="formula-box">nova redução = 90% × redução_original</div></div>
+            <div class="inputs-grid">
+              <div class="field"><label>Alíquota do tributo (%)</label><input type="number" id="i3-aliq" value="15" step="0.01" oninput="calcI3()"></div>
+              <div class="field"><label>Base sem benefício (R$)</label><input type="number" id="i3-base" value="1000000" oninput="calcI3()"></div>
+              <div class="field"><label>Redução de base prevista (R$)</label><input type="number" id="i3-red" value="300000" oninput="calcI3()"></div>
+            </div>
+            <div class="results"><div class="result-header">Resultado da simulação</div><div class="result-rows" id="i3-result"></div></div>
+          </div>
+          <div class="panel" id="tab-i4">
+            <div class="panel-header"><h3>Crédito presumido ou fictício</h3><p>O aproveitamento fica limitado a 90% do valor original. Os 10% restantes são definitivamente cancelados — sem recuperação posterior.</p><div class="formula-box">crédito aproveitável = 90% × crédito_original</div></div>
+            <div class="inputs-grid">
+              <div class="field"><label>Valor do crédito presumido (R$)</label><input type="number" id="i4-cred" value="100000" oninput="calcI4()"></div>
+            </div>
+            <div class="results"><div class="result-header">Resultado da simulação</div><div class="result-rows" id="i4-result"></div></div>
+          </div>
+          <div class="panel" id="tab-i5">
+            <div class="panel-header"><h3>Redução de tributo devido</h3><p>O benefício que reduz o tributo já apurado fica limitado a 90% da redução prevista na legislação específica.</p><div class="formula-box">nova redução = 90% × redução_original</div></div>
+            <div class="inputs-grid">
+              <div class="field"><label>Tributo apurado antes da redução (R$)</label><input type="number" id="i5-trib" value="500000" oninput="calcI5()"></div>
+              <div class="field"><label>Redução prevista no benefício (R$)</label><input type="number" id="i5-red" value="100000" oninput="calcI5()"></div>
+            </div>
+            <div class="results"><div class="result-header">Resultado da simulação</div><div class="result-rows" id="i5-result"></div></div>
+          </div>
+          <div class="panel" id="tab-i6">
+            <div class="panel-header"><h3>Regimes sobre receita bruta</h3><p>Regimes em que o tributo é cobrado como percentual fixo da receita bruta têm a alíquota elevada em 10% de seu próprio valor.</p><div class="formula-box">nova alíquota = alíq_atual × 1,10</div></div>
+            <div class="inputs-grid">
+              <div class="field"><label>Alíquota atual sobre receita (%)</label><input type="number" id="i6-aliq" value="6" step="0.01" oninput="calcI6()"></div>
+              <div class="field"><label>Receita bruta (R$)</label><input type="number" id="i6-rec" value="1000000" oninput="calcI6()"></div>
+            </div>
+            <div class="results"><div class="result-header">Resultado da simulação</div><div class="result-rows" id="i6-result"></div></div>
+          </div>
+          <div class="panel" id="tab-i7">
+            <div class="panel-header"><h3>Lucro presumido — §5º (visão anual simplificada)</h3><p>O percentual de presunção sobe 10%, mas somente sobre a parcela da receita bruta anual que exceder R$ 5 milhões. Para a simulação trimestral completa com cenários I/II/III e ajuste do 4T, use a <strong style="cursor:pointer;color:var(--accent-blue)" onclick="switchPanel('lp')">Aba 2</strong>.</p><div class="formula-box">novo % = % × 1,10 — apenas sobre receita &gt; R$ 5M/ano</div></div>
+            <div class="inputs-grid">
+              <div class="field"><label>Atividade</label><select id="i7-atv" onchange="calcI7()"><option value="8">Comércio e indústria geral (8%)</option><option value="16">Transporte de cargas (16%)</option><option value="32">Serviços em geral (32%)</option><option value="1.6">Revenda de combustíveis (1,6%)</option></select></div>
+              <div class="field"><label>Receita bruta anual (R$)</label><input type="number" id="i7-rec" value="8000000" oninput="calcI7()"></div>
+              <div class="field"><label>Alíquota IRPJ (%)</label><input type="number" id="i7-aliq" value="15" step="0.01" oninput="calcI7()"></div>
+            </div>
+            <div class="results"><div class="result-header">Resultado da simulação</div><div class="result-rows" id="i7-result"></div></div>
+            <div style="padding:12px 16px;background:rgba(108,143,255,.07);border:1px solid rgba(108,143,255,.2);font-size:12px;color:var(--muted);">
+              💡 Para o cálculo trimestral com os três cenários do §5º, clique em <strong style="color:var(--accent-blue);cursor:pointer;" onclick="switchPanel('lp')">Aba 2 — Simulador Lucro Presumido</strong>.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- PAINEL 2 -->
+  <div class="main-panel" id="panel-lp">
+    <div style="margin-bottom:2rem;">
+      <div class="lp-header-badge">LC 224/2025 · IN RFB 2.305 · IN 2.306/2026</div>
+      <div class="lp-title">Simulador — <em>Lucro Presumido</em></div>
+      <div class="lp-sub">Redução linear de benefícios tributários · Acréscimo de 10% nos percentuais de presunção · Art. 14 e 15 da IN RFB 2.305/2025</div>
+    </div>
+    <div class="scenario-label">Selecione o cenário — §5º do art. 15</div>
+    <div class="scenario-tabs">
+      <button class="stab stab-1 active active-1" onclick="setScenario(1)"><div class="stab-dot"></div><div class="stab-num">Cenário I</div><div class="stab-title">Receita anual &lt; R$ 5.000.000</div><div class="stab-desc">Acréscimo aplicado indevidamente → ajuste no 4T com possível restituição</div></button>
+      <button class="stab stab-2" onclick="setScenario(2)"><div class="stab-dot"></div><div class="stab-num">Cenário II</div><div class="stab-title">Excedente anual &lt; soma excedentes T1–T3</div><div class="stab-desc">4T fraco → recálculo proporcional entre trimestres e ajuste</div></button>
+      <button class="stab stab-3" onclick="setScenario(3)"><div class="stab-dot"></div><div class="stab-num">Cenário III</div><div class="stab-title">Excedente anual &gt; soma excedentes T1–T3</div><div class="stab-desc">4T forte → excedente residual aplicado no T4, sem ajuste retroativo</div></button>
+    </div>
+    <div class="controls-row">
+      <div class="ctrl-card"><div class="ctrl-label">Atividade / percentual de presunção</div><select id="ativ" class="lp-select" onchange="lpCalc()"><option value="0.32" selected>Serviços em geral — 32%</option><option value="0.08">Comércio e indústria — 8%</option><option value="0.16">Serviços hospitalares / transporte de carga — 16%</option><option value="0.016">Revenda de combustíveis — 1,6%</option></select></div>
+      <div class="ctrl-card"><div class="ctrl-label">Tributo</div><select id="trib" class="lp-select" onchange="lpCalc()"><option value="0.09" selected>CSLL — 9%</option><option value="0.15">IRPJ — 15%</option><option value="0.25">IRPJ + adicional — 25% (aprox.)</option></select></div>
+    </div>
+    <div class="lp-inputs-section">
+      <div class="scenario-label" style="margin-bottom:10px">Receita bruta por trimestre</div>
+      <div class="lp-inputs-grid" id="lp-inputs-grid"></div>
+    </div>
+    <div class="lp-metrics-grid" id="lp-metrics-grid"></div>
+    <div class="restit-alert" id="lp-restit-alert"><div class="restit-icon">✓</div><div class="restit-text" id="lp-restit-text"></div></div>
+    <div class="csll-notice" id="lp-csll-notice">⚠️ <strong>CSLL em 2026 — atenção (Q&amp;A RFB itens 12 e 13):</strong> O acréscimo de 10% nos percentuais de presunção aplica-se à CSLL somente a partir do <strong>2º trimestre de 2026</strong> (vigência 01/04/2026 — anterioridade nonagesimal). Para a CSLL, o limite anual proporcional é de <strong>R$ 3.750.000,00</strong> (¾ do limite anual = 3 trimestres × R$ 1.250.000). O T1 da CSLL é calculado sem acréscimo. Os cálculos abaixo já refletem essa regra.</div>
+    <div class="table-wrap">
+      <div class="table-header">Apuração trimestral detalhada</div>
+      <div class="table-scroll">
+        <table><colgroup><col><col><col><col><col><col><col><col></colgroup>
+          <thead><tr><th>Trimestre</th><th class="num">Receita bruta</th><th class="num">Dentro do limite</th><th class="num">Excedente trib.</th><th class="num">Base presunção</th><th class="num">Trib. s/ LC 224</th><th class="num">Trib. c/ LC 224</th><th class="num">Variação (R$)</th></tr></thead>
+          <tbody id="lp-table-body"></tbody>
+          <tfoot id="lp-table-foot"></tfoot>
+        </table>
+      </div>
+    </div>
+    <div class="calc-box">
+      <div class="calc-box-header"><div class="calc-box-title">Memória de cálculo — 4º Trimestre (ajuste anual)</div><div id="lp-scenario-pill"></div></div>
+      <div class="calc-steps" id="lp-calc-steps"></div>
+    </div>
+  </div>
+
+  <div class="site-footer">
+    <p>Lei Complementar nº 224, de 26 de dezembro de 2025 · Decreto 12.808/2025 · Portaria MF 3.278/2025<br>IN RFB 2.305/2025 (red. IN 2.306/2026) · Publicada no DOU em 26/12/2025.</p>
+    <p style="text-align:right">Limite anual LP: R$ 5.000.000 · Limite trimestral: R$ 1.250.000<br>Esta ferramenta tem caráter informativo. Consulte seu assessor tributário.</p>
+  </div>
+</div>
+
+<script>
+/* THEME */
+function toggleTheme(){const l=document.body.classList.toggle('light');document.getElementById('theme-icon').textContent=l?'🌙':'☀️';document.getElementById('theme-label').textContent=l?'Tema escuro':'Tema claro';}
+
+/* PANEL SWITCH */
+function switchPanel(id){document.querySelectorAll('.main-panel').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.main-tab').forEach(t=>t.classList.remove('active'));document.getElementById('panel-'+id).classList.add('active');document.querySelectorAll('.main-tab')[id==='geral'?0:1].classList.add('active');window.scrollTo({top:0,behavior:'smooth'});}
+
+/* INCISO CALC HELPERS */
+function fmt(v){return 'R$ '+v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function pct(v){return v.toLocaleString('pt-BR',{minimumFractionDigits:4,maximumFractionDigits:4})+'%';}
+function row(l,v,c){return`<div class="result-row ${c||''}"><span class="r-label">${l}</span><span class="r-val">${v}</span></div>`;}
+function sepRow(){return`<div class="result-row sep"></div>`;}
+function diffRow(a,d){const diff=d-a,p=a>0?((diff/a)*100):0;const badge=diff>0?`<span class="impact-badge up">▲ ${fmt(diff)} &nbsp;(+${p.toFixed(2)}%)</span>`:`<span class="impact-badge zero">Sem acréscimo</span>`;return`<div class="result-row highlight"><span class="r-label">Acréscimo de carga tributária</span>${badge}</div>`;}
+
+function calcI1(){const sel=document.getElementById('i1-trib').value,base=+document.getElementById('i1-base').value||0,parts=sel.replace('i','').split(','),pis=+parts[0],cof=+parts[1];let h='';if(cof>0){const pd=base*(pis*.10/100),cd=base*(cof*.10/100),t=pd+cd;h+=row('Alíquota PIS padrão',pct(pis));h+=row('Alíquota Cofins padrão',pct(cof));h+=row('Nova alíquota PIS (10% do padrão)',pct(pis*.10));h+=row('Nova alíquota Cofins (10% do padrão)',pct(cof*.10));h+=sepRow();h+=row('Tributo antes (isento)',fmt(0));h+=row('PIS devido agora',fmt(pd));h+=row('Cofins devida agora',fmt(cd));h+=row('Total PIS+Cofins',fmt(t),'highlight');h+=diffRow(0,t);}else{const na=pis*.10,td=base*(na/100);h+=row('Alíquota padrão',pct(pis));h+=row('Nova alíquota (10% do padrão)',pct(na));h+=sepRow();h+=row('Tributo antes (isento)',fmt(0));h+=row('Tributo devido agora',fmt(td),'highlight');h+=diffRow(0,td);}document.getElementById('i1-result').innerHTML=h;}
+function calcI2(){const pad=+document.getElementById('i2-pad').value||0,red=+document.getElementById('i2-red').value||0,base=+document.getElementById('i2-base').value||0,na=.9*red+.1*pad,a=base*(red/100),d=base*(na/100);let h='';h+=row('Alíquota reduzida atual',pct(red));h+=row('Alíquota padrão',pct(pad));h+=row('Nova alíquota efetiva',pct(na));h+=sepRow();h+=row('Tributo antes',fmt(a));h+=row('Tributo depois',fmt(d),'highlight');h+=diffRow(a,d);document.getElementById('i2-result').innerHTML=h;}
+function calcI3(){const aliq=+document.getElementById('i3-aliq').value||0,base=+document.getElementById('i3-base').value||0,red=+document.getElementById('i3-red').value||0,nr=red*.9,ba=base-red,bd=base-nr,ta=ba*(aliq/100),td=bd*(aliq/100);let h='';h+=row('Redução de base original',fmt(red));h+=row('Redução mantida (90%)',fmt(nr));h+=row('Redução extinta (10%)',fmt(red*.1));h+=sepRow();h+=row('Base tributável antes',fmt(ba));h+=row('Base tributável depois',fmt(bd));h+=row('Tributo antes',fmt(ta));h+=row('Tributo depois',fmt(td),'highlight');h+=diffRow(ta,td);document.getElementById('i3-result').innerHTML=h;}
+function calcI4(){const c=+document.getElementById('i4-cred').value||0,cn=c*.9,p=c*.1;let h='';h+=row('Crédito original',fmt(c));h+=row('Crédito aproveitável (90%)',fmt(cn));h+=row('Crédito cancelado (10%)',fmt(p));h+=sepRow();h+=`<div class="result-row highlight"><span class="r-label">Custo efetivo adicional</span><span class="impact-badge up">▲ ${fmt(p)} cancelado</span></div>`;document.getElementById('i4-result').innerHTML=h;}
+function calcI5(){const t=+document.getElementById('i5-trib').value||0,red=+document.getElementById('i5-red').value||0,nr=red*.9,a=t-red,d=t-nr;let h='';h+=row('Redução de tributo original',fmt(red));h+=row('Redução mantida (90%)',fmt(nr));h+=row('Redução extinta (10%)',fmt(red*.1));h+=sepRow();h+=row('Tributo a recolher antes',fmt(a));h+=row('Tributo a recolher depois',fmt(d),'highlight');h+=diffRow(a,d);document.getElementById('i5-result').innerHTML=h;}
+function calcI6(){const aliq=+document.getElementById('i6-aliq').value||0,rec=+document.getElementById('i6-rec').value||0,na=aliq*1.10,a=rec*(aliq/100),d=rec*(na/100);let h='';h+=row('Alíquota atual sobre receita',pct(aliq));h+=row('Nova alíquota (+10% do valor)',pct(na));h+=sepRow();h+=row('Tributo antes',fmt(a));h+=row('Tributo depois',fmt(d),'highlight');h+=diffRow(a,d);document.getElementById('i6-result').innerHTML=h;}
+function calcI7(){const pres=+document.getElementById('i7-atv').value||0,rec=+document.getElementById('i7-rec').value||0,aliq=+document.getElementById('i7-aliq').value||0,lim=5000000,np=pres*1.10,ra=Math.min(rec,lim),rb=Math.max(0,rec-lim),la=rec*(pres/100),ld=ra*(pres/100)+rb*(np/100),ta=la*(aliq/100),td=ld*(aliq/100);let h='';h+=row('Percentual de presunção atual',pct(pres));h+=row('Novo percentual (acima de R$ 5M)',pct(np));h+=row('Receita até R$ 5M — sem alteração',fmt(ra));h+=row('Receita acima de R$ 5M — nova presunção',fmt(rb));h+=sepRow();h+=row('Lucro presumido antes',fmt(la));h+=row('Lucro presumido depois',fmt(ld));h+=row('IRPJ antes',fmt(ta));h+=row('IRPJ depois',fmt(td),'highlight');h+=diffRow(ta,td);document.getElementById('i7-result').innerHTML=h;}
+function showTab(id){document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.calc-nav-item').forEach(t=>t.classList.remove('active'));document.getElementById('tab-'+id).classList.add('active');document.querySelectorAll('.calc-nav-item')[['i1','i2','i3','i4','i5','i6','i7'].indexOf(id)].classList.add('active');}
+calcI1();calcI2();calcI3();calcI4();calcI5();calcI6();calcI7();
+
+/* LUCRO PRESUMIDO */
+const LIM=5000000,LIM_T=1250000,LIM_C=3750000;
+let lpScen=1;
+const lpP={1:[1800000,1600000,900000,500000],2:[1800000,1600000,1400000,600000],3:[1800000,1600000,1400000,2200000]};
+function brl(v){return 'R$ '+Math.round(v).toLocaleString('pt-BR');}
+function brlPct(v){return (v*100).toFixed(2).replace('.',',')+' %';}
+function lpBuild(){
+  const g=document.getElementById('lp-inputs-grid');
+  g.innerHTML=['1','2','3','4'].map((q,i)=>{
+    const t4=i===3,v=lpP[lpScen];
+    return`<div class="inp-card${t4?' t4':''}" id="lic-${i}"><div class="inp-quarter">T${q}${t4?' · Ajuste':''}</div><div class="inp-label">${t4?'Último trimestre':q+'º trimestre'} 2026</div><div class="inp-field"><span class="inp-prefix">R$</span><input type="number" class="lp-input" id="lpr${i+1}" value="${v[i]}" step="50000" oninput="lpBar(${i});lpCalc()" min="0"></div><div class="inp-limit-bar"><div class="inp-limit-fill" id="lpb-${i}" style="width:0%"></div></div><div class="inp-limit-label" id="lpbl-${i}"></div></div>`;
+  }).join('');
+  [0,1,2,3].forEach(i=>lpBar(i));
+}
+function lpBar(i){
+  const v=parseFloat(document.getElementById('lpr'+(i+1)).value)||0;
+  const pv=Math.min(100,(v/LIM_T)*100);
+  const f=document.getElementById('lpb-'+i),l=document.getElementById('lpbl-'+i);
+  f.style.width=pv+'%';
+  if(v>LIM_T){f.style.background='linear-gradient(90deg,#00d68f,#ff4d6d)';l.textContent='Excede limite em '+brl(v-LIM_T);l.style.color='var(--danger)';}
+  else{f.style.background='linear-gradient(90deg,#6c8fff,#a78bfa)';l.textContent=(100-pv).toFixed(0)+'% disponível do limite';l.style.color='';}
+}
+function setScenario(n){
+  lpScen=n;
+  document.querySelectorAll('.stab').forEach((b,i)=>{b.classList.remove('active','active-1','active-2','active-3');if(i+1===n)b.classList.add('active','active-'+n);});
+  lpP[n].forEach((v,i)=>{const e=document.getElementById('lpr'+(i+1));if(e){e.value=v;lpBar(i);}});
+  lpCalc();
+}
+function lpCalc(){
+  const r=[1,2,3,4].map(i=>Math.max(0,parseFloat(document.getElementById('lpr'+i).value)||0));
+  const p=parseFloat(document.getElementById('ativ').value);
+  const aliq=parseFloat(document.getElementById('trib').value);
+  const p10=p*1.10,isCsll=aliq===0.09;
+  const limA=isCsll?LIM_C:LIM,pTA=isCsll?1:0;
+  const recA=r.reduce((a,b)=>a+b,0);
+  const recTA=r.filter((_,i)=>i>=pTA).reduce((a,b)=>a+b,0);
+  const excA=Math.max(0,recTA-limA);
+  const excTrim=r.map((ri,i)=>i<pTA?0:Math.max(0,ri-LIM_T));
+  const exc123=excTrim.slice(0,3),sE123=exc123.reduce((a,b)=>a+b,0);
+  const tN=r.map(ri=>ri*p*aliq);
+  const tT=r.map((ri,i)=>{if(i<pTA)return ri*p*aliq;return(Math.min(ri,LIM_T)*p+Math.max(0,ri-LIM_T)*p10)*aliq;});
+  const sD123=tT.slice(0,3).reduce((a,b)=>a+b,0),sN123=tN.slice(0,3).reduce((a,b)=>a+b,0);
+  let t4,cen,cr=0,aj=0,steps=[];
+  if(recTA<=limA){
+    cen=1;aj=sD123-sN123;t4=Math.max(0,tN[3]-aj);cr=Math.max(0,aj-tN[3]);
+    const cn=isCsll?' (CSLL: sem acréscimo no T1 — item 12 Q&A RFB)':'';
+    steps=[{k:'Tributo',v:isCsll?'CSLL — acréscimo a partir do T2':'IRPJ — acréscimo a partir do T1',cls:isCsll?'warn':'info'},{k:'Receita dos trimestres com acréscimo',v:brl(recTA)},{k:'Limite anual efetivo'+(isCsll?' (¾ × R$5M — item 13)':''),v:brl(limA),cls:'info'},{k:'Diagnóstico',v:'Receita ≤ limite → acréscimo nos T com acréscimo foi indevido',cls:'ok'},{k:'Excedente tributado com acréscimo (T1-T3)',v:brl(sE123)},{k:'Tributo recolhido T1-T3 (com acréscimo)'+cn,v:brl(sD123),cls:'warn'},{k:'Tributo correto T1-T3 (% normal)',v:brl(sN123),cls:'ok'},{k:'Diferença a deduzir no T4 (§5º, I)',v:brl(aj),cls:'info'},{k:'T4 — tributo pelo % normal',v:brl(tN[3])},{k:'T4 — após dedução da diferença',v:brl(t4),cls:t4<tN[3]?'ok':''},cr>0?{k:'Crédito restituível / compensável (§7º e §8º)',v:brl(cr)+' + SELIC + 1%',cls:'ok'}:null].filter(Boolean);
+  }else if(excA<sE123&&sE123>0){
+    cen=2;
+    const eP=exc123.map(ex=>sE123>0?(ex/sE123)*excA:0);
+    const tR=eP.map((eR,i)=>{const ri=r[i];if(i<pTA)return ri*p*aliq;return Math.min(ri,LIM_T)*p*aliq+eR*p10*aliq;});
+    const sTR=tR.reduce((a,b)=>a+b,0);
+    aj=sD123-sTR;t4=Math.max(0,tN[3]-aj);cr=Math.max(0,aj-tN[3]);
+    steps=[{k:'Tributo',v:isCsll?'CSLL — acréscimo a partir do T2 (item 12 Q&A RFB)':'IRPJ — acréscimo desde T1',cls:isCsll?'warn':'info'},{k:'Receita dos trimestres com acréscimo',v:brl(recTA)},{k:'Excedente anual efetivo'+(isCsll?' (limite ¾ = R$3,75M)':''),v:brl(excA),cls:'info'},{k:'Soma dos excedentes T1-T3 apurados',v:brl(sE123),cls:'warn'},{k:'Diagnóstico',v:'Excedente anual < soma T1-T3 → recálculo proporcional',cls:'ok'},...exc123.map((ex,i)=>({k:`  Excedente T${i+1} recalculado (proporção)`,v:brl(eP[i])})),{k:'Tributo T1-T3 recalculado (base proporcional)',v:brl(sTR),cls:'ok'},{k:'Tributo T1-T3 realmente recolhido',v:brl(sD123),cls:'warn'},{k:'Diferença a deduzir no T4 (§5º, II)',v:brl(aj),cls:'info'},{k:'T4 — tributo pelo % normal',v:brl(tN[3])},{k:'T4 — após dedução da diferença',v:brl(t4),cls:'ok'},cr>0?{k:'Crédito restituível (§7º e §8º)',v:brl(cr)+' + SELIC + 1%',cls:'ok'}:null].filter(Boolean);
+  }else{
+    cen=3;
+    const eR4=Math.max(0,excA-sE123),d4=Math.min(r[3],LIM_T),eL4=Math.min(eR4,Math.max(0,r[3]-LIM_T)),rn4=Math.max(0,r[3]-LIM_T-eL4);
+    t4=(d4*p+eL4*p10+rn4*p)*aliq;aj=0;
+    steps=[{k:'Tributo',v:isCsll?'CSLL — acréscimo a partir do T2 (item 12 Q&A RFB)':'IRPJ — acréscimo desde T1',cls:isCsll?'warn':'info'},{k:'Receita dos trimestres com acréscimo',v:brl(recTA)},{k:'Excedente anual efetivo'+(isCsll?' (limite ¾ = R$3,75M)':''),v:brl(excA),cls:'info'},{k:'Soma dos excedentes T1-T3 já tributados',v:brl(sE123)},{k:'Diagnóstico',v:'Excedente anual > soma T1-T3 → T4 forte; excedente residual',cls:'warn'},{k:'Excedente residual para T4 (§5º, III)',v:brl(eR4),cls:'info'},{k:'T4 — dentro do limite (% normal)',v:brl(d4)},{k:'T4 — excedente residual (% acrescido)',v:brl(eL4),cls:'warn'},rn4>0?{k:'T4 — restante acima do excedente (% normal)',v:brl(rn4)}:null,{k:'T4 — tributo apurado (misto)',v:brl(t4),cls:'info'},{k:'Ajuste retroativo nos T1-T3',v:'Não há — nenhum recálculo',cls:'ok'}].filter(Boolean);
+  }
+  const tTot=tT[0]+tT[1]+tT[2]+t4,tSem=tN.reduce((a,b)=>a+b,0),dif=tTot-tSem,pDif=tSem>0?(dif/tSem*100).toFixed(2).replace('.',',')+' %':'—';
+  document.getElementById('lp-csll-notice').classList.toggle('show',isCsll);
+  const mc=[{label:'Tributo sem LC 224 (ano)',val:brl(tSem),sub:`% presunção: ${brlPct(p)} · alíquota: ${brlPct(aliq)}`,cls:'neutral'},{label:'Tributo com LC 224 (ano)',val:brl(tTot),sub:isCsll?`% acrescido: ${brlPct(p10)} sobre excedente (T2-T4)`:`% acrescido: ${brlPct(p10)} sobre excedente`,cls:'neutral'},{label:dif>=0?'Acréscimo total no ano':'Redução no ano',val:(dif>=0?'+':'')+brl(dif),sub:`${pDif} sobre tributação original`,cls:dif>0?'negative':dif<0?'positive':'neutral'}];
+  document.getElementById('lp-metrics-grid').innerHTML=mc.map(m=>`<div class="metric-card ${m.cls} anim"><div class="metric-label">${m.label}</div><div class="metric-value">${m.val}</div><div class="metric-sub">${m.sub}</div></div>`).join('');
+  const ae=document.getElementById('lp-restit-alert'),te=document.getElementById('lp-restit-text');
+  if(cr>0){ae.classList.add('show');te.innerHTML=`Crédito de <span class="restit-value">${brl(cr)}</span> disponível para restituição ou compensação — acrescido de <b>SELIC + 1%</b> a partir do mês seguinte ao encerramento do 4T (§7º e §8º do art. 15, IN RFB 2.306/2026).`;}else ae.classList.remove('show');
+  const eT4U=cen===3?Math.min(Math.max(0,r[3]-LIM_T),excA-sE123):0;
+  const pc={1:'pill-green',2:'pill-amber',3:'pill-red'},cl=['I','II','III'][cen-1];
+  const rows=[0,1,2,3].map(i=>{const ri=r[i],d=Math.min(ri,LIM_T),ei=i<3?exc123[i]:eT4U,tn=tN[i],tc=i<3?tT[i]:t4,dt=tc-tn,t4r=i===3,sa=isCsll&&i===0,vc=dt>0?'num var-pos':dt<0?'num var-neg':'num var-zero',vd=dt!==0?(dt>0?'+':'')+brl(dt):'—';return`<tr class="${t4r?'t4-row':''}"><td><span style="font-weight:500">T${i+1}</span>${t4r?`<span class="pill ${pc[cen]}" style="margin-left:6px">Cen. ${cl}</span>`:''}${sa?`<span class="pill pill-amber" style="margin-left:6px;font-size:9px">sem acrésc.</span>`:''}</td><td class="num">${brl(ri)}</td><td class="num">${brl(d)}</td><td class="num">${ei>0?brl(ei):'<span style="color:var(--faint)">—</span>'}</td><td class="num">${brl(ri*p)}</td><td class="num">${brl(tn)}</td><td class="num" style="font-weight:500">${brl(tc)}</td><td class="${vc}">${vd}</td></tr>`;}).join('');
+  document.getElementById('lp-table-body').innerHTML=rows;
+  const tDC=dif>0?'num var-pos':dif<0?'num var-neg':'num var-zero';
+  document.getElementById('lp-table-foot').innerHTML=`<tr><td style="color:var(--muted)">Total anual</td><td class="num">${brl(recA)}</td><td class="num"></td><td class="num">${brl(excA)}</td><td class="num"></td><td class="num">${brl(tSem)}</td><td class="num">${brl(tTot)}</td><td class="${tDC}">${dif>0?'+':''}${brl(dif)}</td></tr>`;
+  document.getElementById('lp-scenario-pill').innerHTML=`<span class="pill ${pc[cen]}">Cenário ${cl}</span>`;
+  document.getElementById('lp-calc-steps').innerHTML=steps.map(s=>`<div class="calc-step"><span class="calc-step-key">${s.k}</span><span class="calc-step-val ${s.cls||''}">${s.v}</span></div>`).join('');
+}
+lpBuild();lpCalc();
+document.querySelectorAll('.stab').forEach((b,i)=>{if(i+1===1)b.classList.add('active','active-1');});
+</script>
+</body>
+</html>
